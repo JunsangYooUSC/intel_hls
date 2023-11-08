@@ -1,0 +1,27 @@
+#ifndef __HLS_IOSTREAM__
+#define __HLS_IOSTREAM__
+
+//This header file allows for basic use of cout and cerr in the same source file as the component.
+//It will ignore any such calls from inside a component when it is synthesized.
+#ifndef HLS_SYNTHESIS
+#include <iostream>
+#else
+
+namespace std {
+
+int endl,ends,flush;
+int hex,dec,oct;
+
+class fake_io {
+public:
+  template<typename T> fake_io& operator<<(T &arg) {
+    return *this;
+  }
+};
+
+class fake_io cout;
+class fake_io cerr;
+}
+#endif //HLS_SYNTHESIS
+#endif //__HLS_IOSTREAM__
+
